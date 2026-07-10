@@ -1,0 +1,158 @@
+.ob {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 20px 80px;
+  background:
+    radial-gradient(600px 300px at 85% -60px, color-mix(in srgb, var(--accent) 9%, transparent), transparent),
+    var(--paper);
+}
+
+.ob-card {
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
+.ob-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 6px;
+}
+
+.ob-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+}
+
+.ob-title {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: var(--lh-display);
+  font-weight: 520;
+  letter-spacing: 0.005em;
+}
+
+.ob-tag {
+  font-size: var(--text-md);
+  line-height: var(--lh-md);
+  color: var(--ink-2);
+  max-width: 420px;
+}
+
+.ob-step {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  box-shadow: var(--shadow-1);
+  padding: 18px 20px 20px;
+}
+
+.ob-step-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ob-step-n {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ob-step-head h2 {
+  font-size: var(--text-md);
+  line-height: var(--lh-md);
+  font-weight: 600;
+}
+
+.ob-step-sub {
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--ink-2);
+}
+
+.ob-keyrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ob-keyrow .input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.ob-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+}
+
+.ob-ok {
+  color: var(--success);
+}
+
+.ob-bad {
+  color: var(--danger);
+}
+
+.ob-tour {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 2px;
+}
+
+.ob-tour li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: var(--text-base);
+  line-height: var(--lh-base);
+  color: var(--ink-2);
+}
+
+.ob-tour li svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+.ob-tour strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ob-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 2px;
+}
+
+.ob-skip {
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--ink-3);
+}
