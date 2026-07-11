@@ -48,6 +48,7 @@ export type IconName =
   | 'clock'
   | 'chat'
   | 'cursor'
+  | 'logout'
 
 const stroked: Partial<Record<IconName, ReactNode>> = {
   send: <path d="M10 16V4M5 8.5 10 4l5 4.5" />,
@@ -198,7 +199,13 @@ const stroked: Partial<Record<IconName, ReactNode>> = {
   'arrow-up': <path d="M10 16.25V4M5.25 8.5 10 3.75l4.75 4.75" />,
   'arrow-left': <path d="M16.25 10H4M8.5 5.25 3.75 10l4.75 4.75" />,
   chat: <path d="M3.6 5.9c0-1.1.9-2 2-2h8.8c1.1 0 2 .9 2 2v5.6c0 1.1-.9 2-2 2H8.2L4.6 16.6l.1-3.1h-.05c-.6-.3-1.05-1-1.05-1.9V5.9Z" />,
-  cursor: <path d="M5 3.8 15.4 9.9l-4.6 1.2-2.5 4.1L5 3.8ZM11.6 12.2l3.2 3.9" />
+  cursor: <path d="M5 3.8 15.4 9.9l-4.6 1.2-2.5 4.1L5 3.8ZM11.6 12.2l3.2 3.9" />,
+  logout: (
+    <>
+      <path d="M12.4 6V4.6c0-.8-.65-1.45-1.45-1.45H5.3c-.8 0-1.45.65-1.45 1.45v10.8c0 .8.65 1.45 1.45 1.45h5.65c.8 0 1.45-.65 1.45-1.45V14" />
+      <path d="M8.4 10h8.2M13.7 7.1 16.6 10l-2.9 2.9" />
+    </>
+  )
 }
 
 const filled: Partial<Record<IconName, ReactNode>> = {

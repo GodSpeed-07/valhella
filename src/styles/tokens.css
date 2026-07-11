@@ -33,11 +33,12 @@
   --r-xl: 20px;
   --r-full: 999px;
 
-  --dur-fast: 120ms;
-  --dur: 190ms;
-  --dur-slow: 320ms;
+  --dur-fast: 150ms;
+  --dur: 230ms;
+  --dur-slow: 400ms;
   --ease: cubic-bezier(0.2, 0.8, 0.28, 1);
-  --ease-spring: cubic-bezier(0.32, 1.36, 0.4, 1);
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.26, 0.5, 1);
 
   --z-menu: 60;
   --z-toast: 80;

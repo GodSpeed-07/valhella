@@ -194,7 +194,7 @@
   min-width: 168px;
   max-width: 300px;
   padding: 5px;
-  animation: menu-in var(--dur-fast) var(--ease);
+  animation: menu-in var(--dur) var(--ease-out);
 }
 
 @keyframes menu-in {
@@ -298,7 +298,7 @@
   flex: none;
   border-radius: var(--r-full);
   background: var(--line-strong);
-  transition: background var(--dur-fast) var(--ease);
+  transition: background var(--dur) var(--ease-out);
 }
 
 .toggle::after {
@@ -311,7 +311,7 @@
   border-radius: 50%;
   background: var(--paper-raised);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
-  transition: transform var(--dur-fast) var(--ease);
+  transition: transform var(--dur) var(--ease-spring);
 }
 
 .toggle[aria-checked='true'] {

@@ -40,7 +40,7 @@ export default function Header() {
   )
 
   const onMenu = (id: string) => {
-    if (id === 'settings') setView('settings')
+    if (id === 'settings') void chrome.tabs.create({ url: chrome.runtime.getURL('src/settings/index.html') })
     else if (id === 'export' && conversation) {
       void (async () => {
         const md = conversationToMarkdown(conversation, messages)

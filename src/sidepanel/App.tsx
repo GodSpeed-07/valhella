@@ -4,7 +4,6 @@ import Thread from './components/Thread'
 import Composer from './components/Composer'
 import NoKey from './components/NoKey'
 import History from './views/History'
-import SettingsView from './views/SettingsView'
 import { stopAgent, useAgent } from './agent'
 import { useStore } from './store'
 
@@ -37,8 +36,6 @@ export default function App() {
       <Header />
       {view === 'history' ? (
         <History />
-      ) : view === 'settings' ? (
-        <SettingsView />
       ) : noKey ? (
         <NoKey />
       ) : (

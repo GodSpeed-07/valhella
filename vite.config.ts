@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         sidepanel: 'src/sidepanel/index.html',
         onboarding: 'src/onboarding/index.html',
+        settings: 'src/settings/index.html',
         offscreen: 'src/offscreen/index.html',
         background: 'src/background/index.ts'
       },

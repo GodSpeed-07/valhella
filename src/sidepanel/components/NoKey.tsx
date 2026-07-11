@@ -1,5 +1,5 @@
 import Icon from '../../ui/Icon'
-import { KeyEditor } from '../views/SettingsView'
+import { KeyEditor } from './KeyEditor'
 import { useStore } from '../store'
 
 export default function NoKey() {
