@@ -21,7 +21,7 @@ import { SESSION_HANDOFF_KEY, type HandoffPayload, type PageExtract } from '../l
 import { readActivePage, type PageContextState } from '../lib/pagecontext'
 import { hostnameOf } from '../lib/settings'
 
-export type View = 'chat' | 'history' | 'settings'
+export type View = 'chat' | 'history'
 export type { PageContextState }
 
 export interface Attachment {
@@ -51,6 +51,7 @@ interface PanelStore {
   composerText: string
   editing: boolean
   pageContext: PageContextState
+  pageAdded: boolean
   attachments: Attachment[]
   agentMode: boolean
   setAgentMode(v: boolean): void
@@ -74,7 +75,7 @@ interface PanelStore {
   cancelEdit(): void
   refreshPageContext(): Promise<void>
   removePageContext(): void
-  restorePageContext(): void
+  addPageContext(): void
   blockCurrentSite(): Promise<void>
   unblockSite(host: string): Promise<void>
   addAttachment(a: Attachment): void
@@ -305,6 +306,7 @@ export const useStore = create<PanelStore>((set, get) => {
     composerText: '',
     editing: false,
     pageContext: { status: 'none' },
+    pageAdded: false,
     attachments: [],
     agentMode: false,
 
@@ -458,9 +460,9 @@ export const useStore = create<PanelStore>((set, get) => {
         composerText: '',
         editing: false,
         attachments: [],
-        webSearch: settings?.webSearchDefault ?? true
+        webSearch: settings?.webSearchDefault ?? true,
+        pageAdded: false
       })
-      get().restorePageContext()
     },
 
     async openConversation(id) {
@@ -512,7 +514,7 @@ export const useStore = create<PanelStore>((set, get) => {
       }
 
       let context: PageExtract | null = null
-      if (s.pageContext.status === 'ready') {
+      if (s.pageContext.status === 'ready' && s.pageAdded) {
         const fresh = await readActivePage(s.settings)
         if (fresh.status === 'ready') {
           context = fresh.page
@@ -572,7 +574,6 @@ export const useStore = create<PanelStore>((set, get) => {
         attachments: [],
         streaming: { messageId: assistantRow.id, connecting: true }
       })
-      if (s.pageContext.status === 'removed') get().restorePageContext()
       await runAssistant(conv, history, assistantRow.id, s.model, s.webSearch)
     },
 
@@ -633,29 +634,20 @@ export const useStore = create<PanelStore>((set, get) => {
       const next = await readActivePage(settings)
       if (seq !== contextSeq) return
       const current = get().pageContext
-      if (
-        current.status === 'removed' &&
+      const keepAdded =
+        get().pageAdded &&
+        current.status === 'ready' &&
         next.status === 'ready' &&
         next.page.url === current.page.url
-      ) {
-        set({ pageContext: { status: 'removed', page: next.page, favIconUrl: next.favIconUrl } })
-        return
-      }
-      set({ pageContext: next })
+      set({ pageContext: next, pageAdded: keepAdded })
     },
 
     removePageContext() {
-      const pc = get().pageContext
-      if (pc.status === 'ready') {
-        set({ pageContext: { status: 'removed', page: pc.page, favIconUrl: pc.favIconUrl } })
-      }
+      set({ pageAdded: false })
     },
 
-    restorePageContext() {
-      const pc = get().pageContext
-      if (pc.status === 'removed') {
-        set({ pageContext: { status: 'ready', page: pc.page, favIconUrl: pc.favIconUrl } })
-      }
+    addPageContext() {
+      if (get().pageContext.status === 'ready') set({ pageAdded: true })
     },
 
     async blockCurrentSite() {
@@ -665,7 +657,7 @@ export const useStore = create<PanelStore>((set, get) => {
       const host = hostnameOf(pc.page.url)
       if (!host || s.siteContextBlocklist.includes(host)) return
       await updateSettings({ siteContextBlocklist: [...s.siteContextBlocklist, host] })
-      set({ pageContext: { status: 'blocked', host } })
+      set({ pageContext: { status: 'blocked', host }, pageAdded: false })
     },
 
     async unblockSite(host) {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { hostnameOf } from '../../lib/settings'
 import { unreadableCopy } from '../../lib/pagecontext'
 import Icon from '../../ui/Icon'
@@ -13,23 +13,39 @@ function ChipFavicon({ url, favIconUrl }: { url: string; favIconUrl: string | nu
   return <img className="ctx-favicon" src={src} alt="" width={13} height={13} onError={() => setFailed(true)} />
 }
 
+function ChipShell({ children }: { children: ReactNode }) {
+  return <div className="ctx-dock">{children}</div>
+}
+
 export default function ContextChip() {
+  const agentMode = useStore((s) => s.agentMode)
   const pc = useStore((s) => s.pageContext)
+  const pageAdded = useStore((s) => s.pageAdded)
+  const addPageContext = useStore((s) => s.addPageContext)
   const removePageContext = useStore((s) => s.removePageContext)
-  const restorePageContext = useStore((s) => s.restorePageContext)
   const blockCurrentSite = useStore((s) => s.blockCurrentSite)
   const unblockSite = useStore((s) => s.unblockSite)
 
-  if (pc.status === 'none') return null
+  if (agentMode) return null
 
   if (pc.status === 'ready') {
+    if (!pageAdded) {
+      return (
+        <ChipShell>
+          <button className="ctx-add" onClick={addPageContext} title={pc.page.title}>
+            <Icon name="plus" size={13} />
+            <span>Add this page</span>
+          </button>
+        </ChipShell>
+      )
+    }
     const host = hostnameOf(pc.page.url) ?? ''
     return (
-      <div className="ctxrow">
-        <div className="ctx-chip">
+      <ChipShell>
+        <div className="ctx-pill ctx-pill-live">
           <Menu
             entries={[
-              { id: 'remove', label: 'Remove for this message', icon: 'x' },
+              { id: 'remove', label: 'Stop using this page', icon: 'x' },
               { id: 'block', label: `Never attach on ${host}`, icon: 'eye-off' }
             ]}
             onSelect={(id) => {
@@ -45,46 +61,48 @@ export default function ContextChip() {
                 className="ctx-chip-main"
                 title={pc.page.title}
               >
+                <span className="ctx-reading">Reading</span>
                 <ChipFavicon url={pc.page.url} favIconUrl={pc.favIconUrl} />
                 <span className="ctx-title">{pc.page.title}</span>
                 <Icon name="chevron-down" size={10} />
               </button>
             )}
           />
-          <IconButton icon="x" label="Remove page context" size="sm" onClick={removePageContext} />
+          <IconButton icon="x" label="Stop using this page" size="sm" onClick={removePageContext} />
         </div>
-      </div>
-    )
-  }
-
-  if (pc.status === 'removed') {
-    return (
-      <div className="ctxrow ctx-muted">
-        <Icon name="eye-off" size={12} />
-        <span>Page context off for this message</span>
-        <button className="ctx-link" onClick={restorePageContext}>
-          Undo
-        </button>
-      </div>
+      </ChipShell>
     )
   }
 
   if (pc.status === 'blocked') {
     return (
-      <div className="ctxrow ctx-muted">
-        <Icon name="eye-off" size={12} />
-        <span>Never attached on {pc.host}</span>
-        <button className="ctx-link" onClick={() => void unblockSite(pc.host)}>
-          Allow
-        </button>
-      </div>
+      <ChipShell>
+        <div className="ctx-pill ctx-pill-muted">
+          <Icon name="eye-off" size={12} />
+          <span className="ctx-pill-text" title={`Never attached on ${pc.host}`}>
+            Never attached on {pc.host}
+          </span>
+          <button className="ctx-link" onClick={() => void unblockSite(pc.host)}>
+            Allow
+          </button>
+        </div>
+      </ChipShell>
     )
   }
 
-  return (
-    <div className="ctxrow ctx-muted">
-      <Icon name="warning" size={12} />
-      <span>{unreadableCopy(pc.reason)}</span>
-    </div>
-  )
+  if (pc.status === 'unreadable') {
+    const copy = unreadableCopy(pc.reason)
+    return (
+      <ChipShell>
+        <div className="ctx-pill ctx-pill-muted ctx-pill-warn">
+          <Icon name="warning" size={12} />
+          <span className="ctx-pill-text" title={copy}>
+            {copy}
+          </span>
+        </div>
+      </ChipShell>
+    )
+  }
+
+  return null
 }

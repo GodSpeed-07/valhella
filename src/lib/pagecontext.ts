@@ -4,7 +4,6 @@ import type { ExtractResponse, PageExtract } from './messages'
 export type PageContextState =
   | { status: 'none' }
   | { status: 'ready'; page: PageExtract; favIconUrl: string | null }
-  | { status: 'removed'; page: PageExtract; favIconUrl: string | null }
   | { status: 'blocked'; host: string }
   | { status: 'unreadable'; title: string; reason: 'restricted' | 'no-access' | 'empty' }
 
